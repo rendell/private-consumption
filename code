@@ -1,0 +1,16 @@
+data <- read.csv("data.csv")
+
+library("lubridate")
+library("dplyr")
+library("dygraphs")
+library("xts")
+
+data$Date <- mdy(data$Date)
+
+arrange(data,Date)
+
+data1 <- summarise(group_by(data, Date), sum(DailyTotal))
+
+myts <- ts(data1, start=c(2016,1,1), end=c(2016,11,30),frequency=365.25)
+
+matrix_xts <- as.xts(data1, dateFormat='Date')
